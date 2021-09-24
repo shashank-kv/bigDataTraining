@@ -1,9 +1,9 @@
-#Steps to run the code
+# Steps to run the code
 
-##To run queries using Spark dataframes
+## To run queries using Spark dataframes
 
 spark-submit --class dataframes final.jar
 
-##To run queries using Spark SQL
+## To run queries using Spark SQL
 
 spark-submit --class sql final.jar
