@@ -34,9 +34,9 @@ object dataframes extends App{
   
     println("Count of orders based on Status and month")
     
-    val res3 = ordersDf.groupBy(month(col("Date")).as("month"),col("Status")).count()
+    val pivotDf = ordersDf.groupBy(month(col("Date")).as("month")).pivot("Status").count()
     
-    res3.show()
+    pivotDf.orderBy(col("month").asc).show()
     
     //c. Count of orders based on Status and month for a customer
   
@@ -97,9 +97,8 @@ object dataframes extends App{
     println("Customer who did not order in last 1 month")
   
     val cur_month = Calendar.getInstance.get(Calendar.MONTH)
-  
-    val res12 = combinedDf.select("ID")
-      .where(s"${month(col("Date")).minus(cur_month + 1)} >= 1")
+    
+    val res12 = combinedDf.select(col("ID"), col("Date"), datediff(current_date(), col("Date")).as("diff")).where(col("diff")>30)
   
     res12.show()
   
@@ -156,7 +155,13 @@ object dataframes extends App{
     val res19 = combinedDf.groupBy("City").count()
     
     res19.show()
-  
+    
+    //Masking
+    
+    customersDf.withColumn("Number",col("Pin")* 25).show()
+    
+    customersDf.withColumn("Number",lit("***Masked***")).show()
+    
     spark.stop()
 
 }

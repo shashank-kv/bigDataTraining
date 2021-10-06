@@ -38,7 +38,7 @@ object sql extends App{
     println("Count of orders based on Status and month")
   
     spark.sql("select count(No),Status,month(Date) from orders group by Status,month(Date)").show();
-  
+    
     //c. Count of orders based on Status and month for a customer
   
     println("Enter customer id for count of orders based on status and month")
